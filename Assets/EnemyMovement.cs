@@ -23,9 +23,10 @@ public class EnemyMovement : MonoBehaviour
         if (Vector2.Distance(target.position, transform.position) <= 0.1f)
         {
             pathIndex++;
-            if (pathIndex >= LevelManager.main.path.Length)
-            {
-                // If we have reached the end of the path array, destroy this enemy
+
+
+            if (pathIndex >= LevelManager.main.path.Length){
+                EnemySpawner.onEnemyDestroy.Invoke();
                 Destroy(gameObject);
                 return;
             }
