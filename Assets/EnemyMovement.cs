@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
@@ -15,29 +13,33 @@ public class EnemyMovement : MonoBehaviour
 
     private void Start()
     {
+        // Retrieve the path array from LevelManager; set the initial target to the first path point
         target = LevelManager.main.path[pathIndex];
     }
 
     private void Update()
     {
-        if (Vector2.Distance(target.position, transform.position) <= 0.1f) // 如果敌人到达目标点，就移动到下一个目标点。 <0.1f是为了防止敌人在目标点上抖动
+        // When the enemy is close enough to the current target, move on to the next path point
+        if (Vector2.Distance(target.position, transform.position) <= 0.1f)
         {
             pathIndex++;
-
-            if (pathIndex >= LevelManager.main.path.Length){
+            if (pathIndex >= LevelManager.main.path.Length)
+            {
+                // If we have reached the end of the path array, destroy this enemy
                 Destroy(gameObject);
                 return;
-            }else{
-            target = LevelManager.main.path[pathIndex];
+            }
+            else
+            {
+                target = LevelManager.main.path[pathIndex];
             }
         }
     }
-    private void FixedUpdate() // 用来处理物理相关的操作，比如移动，旋转等
+
+    private void FixedUpdate()
     {
+        // Use the Rigidbody2D to move along the path
         Vector2 direction = (target.position - transform.position).normalized;
         rb.velocity = direction * moveSpeed;
     }
-
-
-
 }
